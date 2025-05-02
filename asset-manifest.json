@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/IceCreamPersonalities/static/css/main.27a3f199.css",
-    "main.js": "/IceCreamPersonalities/static/js/main.84550eac.js",
+    "main.js": "/IceCreamPersonalities/static/js/main.3db6bb47.js",
     "index.html": "/IceCreamPersonalities/index.html",
     "main.27a3f199.css.map": "/IceCreamPersonalities/static/css/main.27a3f199.css.map",
-    "main.84550eac.js.map": "/IceCreamPersonalities/static/js/main.84550eac.js.map"
+    "main.3db6bb47.js.map": "/IceCreamPersonalities/static/js/main.3db6bb47.js.map"
   },
   "entrypoints": [
     "static/css/main.27a3f199.css",
-    "static/js/main.84550eac.js"
+    "static/js/main.3db6bb47.js"
   ]
 }
