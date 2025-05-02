@@ -73,14 +73,14 @@ function App() {
   return (
     <div className="quiz-container">
       <img
-        src="/assets/logo.png"
+        src={`${process.env.PUBLIC_URL}/assets/logo.png`}
         alt="Which Hungarian Ice Cream Are You?"
         className="quiz-logo"
       />
 
       <div className={`slide ${direction}`} key={currentQuestion}>
         <img
-          src={`/assets/questions/${imageFilenames[currentQuestion]}`}
+          src={`${process.env.PUBLIC_URL}/assets/questions/${imageFilenames[currentQuestion]}`}
           alt=""
           className="question-image"
         />
