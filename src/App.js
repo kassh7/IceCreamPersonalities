@@ -27,8 +27,73 @@ const imageFilenames = [
   "q10-emotional-response.png"
 ];
 
+const scoreMap = {
+  1: { // What's your ideal summer activity?
+    Beach:       { Calippo: 2, Cornetto: 1 },
+    Hiking:      { Kaktusz: 2, BigTrio: 1 },
+    Reading:     { Szendvics: 2, IceNGo: 1 },
+    Partying:    { CikkCakk: 2, Calippo: 1 }
+  },
+  2: { // Pick a color palette
+    Pastels:     { Tappancs: 2, Cornetto: 1 },
+    Neon:        { Cerka: 2, Twister: 1 },
+    "Earth tones": { BigTrio: 2, Kaktusz: 1 },
+    Monochrome:  { IceNGo: 2, Szendvics: 1 }
+  },
+  3: { // You're at a party. You are:
+    Dancing:     { Calippo: 2, CikkCakk: 1 },
+    Chatting:    { Twister: 2, Cornetto: 1 },
+    Eating:      { BigTrio: 2, Szendvics: 1 },
+    Watching:    { IceNGo: 2, Tappancs: 1 }
+  },
+  4: { // How do you solve problems?
+    "Head-on":   { Kaktusz: 2, Calippo: 1 },
+    "Avoid them": { Cerka: 2, CikkCakk: 1 },
+    "Ask for help": { Tappancs: 2, Cornetto: 1 },
+    Overthink:   { IceNGo: 2, Szendvics: 1 }
+  },
+  5: { // Dream vacation spot
+    Tokyo:       { Cerka: 2, IceNGo: 1 },
+    Paris:       { Cornetto: 2, Tappancs: 1 },
+    Iceland:     { Kaktusz: 2, BigTrio: 1 },
+    Maldives:    { Calippo: 2, Twister: 1 }
+  },
+  6: { // Favorite kind of movie?
+    Comedy:      { Twister: 2, Calippo: 1 },
+    Horror:      { Cerka: 2, IceNGo: 1 },
+    Drama:       { Cornetto: 2, Tappancs: 1 },
+    Romance:     { Szendvics: 2, Cornetto: 1 }
+  },
+  7: { // Choose a pet
+    Dog:         { BigTrio: 2, Tappancs: 1 },
+    Cat:         { Cornetto: 2, IceNGo: 1 },
+    Bird:        { Twister: 2, Cerka: 1 },
+    "No pet":    { Szendvics: 2, Kaktusz: 1 }
+  },
+  8: { // How often do you plan things?
+    Always:      { BigTrio: 2, Szendvics: 1 },
+    Sometimes:   { Cornetto: 2, IceNGo: 1 },
+    Rarely:      { CikkCakk: 2, Calippo: 1 },
+    Never:       { Cerka: 2, Twister: 1 }
+  },
+  9: { // Sweet or sour?
+    Sweet:       { Tappancs: 2, Cornetto: 1 },
+    Sour:        { Kaktusz: 2, CikkCakk: 1 }
+  },
+  10: { // You see someone crying
+    Hug:         { Tappancs: 2, Cornetto: 1 },
+    Talk:        { BigTrio: 2, Calippo: 1 },
+    Ignore:      { Cerka: 2, IceNGo: 1 },
+    Panic:       { CikkCakk: 2, Twister: 1 }
+  }
+};
 
-const results = ["Calippo", "Kaktusz", "Ice'n'go", "Szendvics fagyi", "Cornetto", "Cikk Cakk", "Cerka", "Big Trio", "Tappancs", "Twister"];
+
+const results = [
+  "Calippo", "Kaktusz", "IceNGo", "Szendvics", "Cornetto",
+  "CikkCakk", "Cerka", "BigTrio", "Tappancs", "Twister"
+];
+
 
 function App() {
   const [direction, setDirection] = useState('forward');
@@ -45,8 +110,26 @@ function App() {
   const handleNext = () => {
     setDirection('forward');
     if (currentQuestion === questions.length - 1) {
-      const rand = Math.floor(Math.random() * results.length);
-      setResult(results[rand]);
+      const scores = {};
+    
+      for (let qId in answers) {
+        const answer = answers[qId];
+        const scoreEntries = scoreMap[qId]?.[answer];
+    
+        if (scoreEntries) {
+          for (let [iceCream, points] of Object.entries(scoreEntries)) {
+            scores[iceCream] = (scores[iceCream] || 0) + points;
+          }
+        }
+      }
+    
+      const maxScore = Math.max(...Object.values(scores));
+      const topResults = Object.entries(scores)
+        .filter(([_, score]) => score === maxScore)
+        .map(([iceCream]) => iceCream);
+    
+      const selected = topResults[Math.floor(Math.random() * topResults.length)];
+      setResult(selected);
       setShowResult(true);
     } else {
       setCurrentQuestion((prev) => prev + 1);
@@ -66,6 +149,8 @@ function App() {
       </div>
     );
   }
+
+  
 
   const q = questions[currentQuestion];
   const isAnswered = answers[q.id];
