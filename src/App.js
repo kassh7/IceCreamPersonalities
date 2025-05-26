@@ -142,13 +142,43 @@ function App() {
   };
 
   if (showResult) {
+    const filename = result.toLowerCase().replace(/'/g, "").replace(/\s/g, "") + ".png";
+    const imagePath = `${process.env.PUBLIC_URL}/assets/results/${filename}`;
+  
     return (
       <div className="result">
-        <h1>You got: {result}</h1>
-        <p>Thanks for playing!</p>
+        <img
+          src={imagePath}
+          alt={`You got ${result}`}
+          className="result-image"
+          id="result-image"
+        />
+  
+        <div className="result-buttons">
+          <a href={imagePath} download={`icecream-${filename}`} className="result-button">
+            Download
+          </a>
+          <button
+            className="result-button"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: 'Which Hungarian Ice Cream Are You?',
+                  text: `I got ${result}! 🍦`,
+                  url: window.location.href
+                }).catch((err) => console.log('Share cancelled or failed:', err));
+              } else {
+                alert("Sharing is not supported on this device.");
+              }
+            }}
+          >
+            Share
+          </button>
+        </div>
       </div>
     );
   }
+  
 
   
 
